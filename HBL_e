@@ -1,0 +1,20 @@
+# HBL_e
+
+# define linear search
+def linear_search(sorted_name, sorted_score, name):
+    for i in range(len(sorted_name)):
+        if sorted_name[i] == name:
+            return (name, sorted_score[i])
+    return None
+
+# main
+# get the input
+name = input('Enter the name of the player:')
+# get sorted name and score from the leaderboard
+
+find = linear_search(sorted_name, sorted_score, name)
+find_name = find[0]
+find_score = find[1]
+# get output
+print (find_name,'{0:>14}'.format(find_score))
+
