@@ -1,0 +1,70 @@
+# HBL_b
+
+# define the function of quick sort
+def quick_sort(scores,names):
+    if scores == []:
+        return []
+    left = []
+    leftname = []
+    right = []
+    rightname = []
+    pivot = scores[0]
+    pivotname = names[0]
+
+    # sort scores and names together
+    for i in range (1,len(scores)):
+        if scores[i] < pivot:
+            left.append(scores[i])
+            leftname.append(names[i])
+    
+        else:
+            right.append(scores[i])
+            rightname.append(names[i])
+
+    lefttotal= quick_sort(left,leftname)
+    if lefttotal != []:
+        left = lefttotal[0]
+        leftname = lefttotal[1]
+
+    righttotal = quick_sort(right,rightname)
+    if righttotal != []:
+        right = righttotal[0]
+        rightname = righttotal[1]
+    
+    sorted_score = right + [pivot] + left
+    sorted_name = rightname + [pivotname] + leftname
+
+    # sort the names of players with the same scores
+    for i in range (0,len(sorted_score)-1):
+        if sorted_score[i] == sorted_score[i+1]:
+            name1 = sorted_name[i]
+            name2 = sorted_name[i+1]
+            if ord(name1[0]) > ord (name2[0]):
+                sorted_name[i], sorted_name[i+1] = sorted_name[i+1], sorted_name[i]
+
+    # return both lists
+    return (sorted_score, sorted_name)
+
+            
+# main
+names = []
+scores = []
+
+# get inputs
+n = int(input('Enter the number of players:'))
+for i in range(0, n):
+    name = input('Enter the name of the player:')
+    score = int(input('Enter the score of the player:'))
+
+# add in inputs to lists
+names.append(name)
+scores.append(score)
+
+# get the sorted value
+after_sort = quick_sort(scores,names)
+sorted_names = after_sort[1]
+sorted_scores = after_sort[0]
+
+# print the leaderboard
+for i in range (0,n):
+    print (sorted_names[i],'{0:>14}'.format(sorted_scores[i]))
