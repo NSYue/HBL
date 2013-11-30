@@ -1,0 +1,15 @@
+# HBL_a
+
+# define lists for values
+names = []
+scores = []
+
+# get inputs
+n = int(input('Enter the number of players:'))
+for i in range(0, n):
+    name = input('Enter the name of the player:')
+    score = int(input('Enter the score of the player:'))
+
+# add in inputs to lists
+names.append(name)
+scores.append(score)
