@@ -1,0 +1,54 @@
+# HBL_d
+
+# define insert
+
+def insert(sorted_score, sorted_name, new_name, new_score):
+    # special cases
+    if new_score > sorted_score[0]:
+        sorted_score = [new_score] + sorted_score
+        sorted_name = [new_name] + sorted_name
+        return (sorted_score, sorted_name)
+    if new_score < sorted_score[-1]:
+        sorted_score = sorted_score + [new_score]
+        sorted_name = sorted_name + [new_name]
+        return (sorted_score, sorted_name)
+
+    # bubble sort to insert the score and name
+    low = 0
+    high = len(sorted_score) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        # find the target
+        if sorted_score[mid] >= new_score and sorted_score[mid+1] < new_score:
+            # edit the leaderboard
+            sorted_score = sorted_score[0:mid+1] + [new_score] + sorted_score[mid+1:]
+            sorted_name = sorted_name[0:mid+1] +[new_name] + sorted_name[mid+1:]
+            # arrange the players with the same scores
+            for i in range (0,len(sorted_score)-1):
+                if sorted_score[i] == sorted_score [i+1]:
+                    name1 = sorted_name[i]
+                    name2 = sorted_name[i+1]
+                    if ord(name1[0]) > ord (name2[0]):
+                        sorted_name[i], sorted_name[i+1] = sorted_name[i+1], sorted_name[i]
+            return (sorted_score, sorted_name)
+        
+        elif sorted_score[mid] < new_score:
+            high = mid - 1
+        else: 
+            low = mid + 1
+            
+    return (sorted_score, sorted_name)
+
+# main
+# get the input data from the sorted leaderboard
+# get the sorted value
+after_sort = insert(sorted_score, sorted_names)
+sorted_names = after_sort[1]
+sorted_scores = after_sort[0]
+
+# print the leaderboard
+for i in range (0,n):
+    print (sorted_names[i],'{0:>14}'.format(sorted_scores[i]))
+
+
+    
