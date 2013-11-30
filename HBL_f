@@ -1,0 +1,34 @@
+# HBL_f
+
+import random
+
+def generate_name():
+    # state the length of the name
+    name_length = random.choice(range(3, 10))
+    name_nums = []
+    # get the numerical symbol of random letters
+    for i in range(0, name_length):
+        name_num = random.choice(range(1, 27))
+        name_nums.append(name_num)
+    # get the first alphabet using ASCII- capital letter
+    name = chr(64 + name_nums[0])
+    # get the rest of the alphabets using ASCII- lower-case
+    for i in range(1, name_length):
+        name += chr(96 + name_nums[i])
+    return name
+
+
+n = int(input('Enter the number of players : '))
+score = int(input('Enter in the score wanted : '))
+names = []
+for i in range(0, n):
+   name = generate_name()
+   names.append(name)
+for i in range (0,n-1):
+    name1 = names[i]
+    name2 = names[i+1]
+    if ord(name1[0]) > ord (name2[0]):
+        names[i], names[i+1] = names[i+1], names[i]
+        
+for i in range (0,n):
+    print(names[i]+ ' has score ' + str(score))
