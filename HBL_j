@@ -1,0 +1,160 @@
+# HBL_j
+import random
+
+def quick_sort(scores,names):
+    if scores == []:
+        return []
+    left = []
+    leftname = []
+    right = []
+    rightname = []
+    pivot = scores[0]
+    pivotname = names[0]
+
+    # sort scores and names together
+    for i in range (1,len(scores)):
+        if scores[i] < pivot:
+            left.append(scores[i])
+            leftname.append(names[i])
+    
+        else:
+            right.append(scores[i])
+            rightname.append(names[i])
+
+    lefttotal= quick_sort(left,leftname)
+    if lefttotal != []:
+        left = lefttotal[0]
+        leftname = lefttotal[1]
+
+    righttotal = quick_sort(right,rightname)
+    if righttotal != []:
+        right = righttotal[0]
+        rightname = righttotal[1]
+    
+    sorted_score = right + [pivot] + left
+    sorted_name = rightname + [pivotname] + leftname
+
+    # sort the names of players with the same scores
+    for i in range (0,len(sorted_score)-1):
+        if sorted_score[i] == sorted_score[i+1]:
+            name1 = sorted_name[i]
+            name2 = sorted_name[i+1]
+            if ord(name1[0]) > ord (name2[0]):
+                sorted_name[i], sorted_name[i+1] = sorted_name[i+1], sorted_name[i]
+
+    # return both lists
+    return (sorted_score, sorted_name)
+
+def generate_score():
+    return random.choice(range(0, 100000))
+
+def generate_name():
+    # state the length of the name
+    name_length = random.choice(range(3, 10))
+    name_nums = []
+    # get the numerical symbol of random letters
+    for i in range(0, name_length):
+        name_num = random.choice(range(1, 27))
+        name_nums.append(name_num)
+    # get the first alphabet using ASCII- capital letter
+    name = chr(64 + name_nums[0])
+    # get the rest of the alphabets using ASCII- lower-case
+    for i in range(1, name_length):
+        name += chr(96 + name_nums[i])
+    return name
+
+def insert(sorted_score, sorted_name, new_name, new_score):
+    # special cases
+    if new_score > sorted_score[0]:
+        sorted_score = [new_score] + sorted_score
+        sorted_name = [new_name] + sorted_name
+        return (sorted_score, sorted_name)
+    if new_score < sorted_score[-1]:
+        sorted_score = sorted_score + [new_score]
+        sorted_name = sorted_name + [new_name]
+        return (sorted_score, sorted_name)
+
+    # bubble sort to insert the score and name
+    low = 0
+    high = len(sorted_score) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        # find the target
+        if sorted_score[mid] >= new_score and sorted_score[mid+1] < new_score:
+            # edit the leaderboard
+            sorted_score = sorted_score[0:mid+1] + [new_score] + sorted_score[mid+1:]
+            sorted_name = sorted_name[0:mid+1] +[new_name] + sorted_name[mid+1:]
+            # arrange the players with the same scores
+            for i in range (0,len(sorted_score)-1):
+                if sorted_score[i] == sorted_score [i+1]:
+                    name1 = sorted_name[i]
+                    name2 = sorted_name[i+1]
+                    if ord(name1[0]) > ord (name2[0]):
+                        sorted_name[i], sorted_name[i+1] = sorted_name[i+1], sorted_name[i]
+            return (sorted_score, sorted_name)
+        
+        elif sorted_score[mid] < new_score:
+            high = mid - 1
+        else: 
+            low = mid + 1
+            
+    return (sorted_score, sorted_name)
+
+def linear_search(sorted_name, sorted_score, name):
+    for i in range(len(sorted_name)):
+        if sorted_name[i] == name:
+            return (name, sorted_score[i])
+    return None
+
+# main
+# menu
+while True:
+    command = input("""
+Enter 1 to generate names and scores
+Enter 2 to display leaderboard
+Enter 3 to insert new player
+Enter 4 to search the player
+Enter 0 to exit the system
+ 
+Enter: """)
+
+
+    if command == '0':
+        break
+    
+    elif command == '1':
+        
+        for i in range(0, n):
+           name = generate_name()
+           score = generate_score()
+           names.append(name)
+           scores.append(score)
+           
+    elif command == '2':
+        after_sort = quick_sort(scores,names)
+        sorted_names = after_sort[1]
+        sorted_scores = after_sort[0]
+        for i in range (0,n):
+            print (sorted_names[i],'{0:>14}'.format(sorted_scores[i]))
+
+    elif command == '3':
+        updated = insert(sorted_score, sorted_names)
+        sorted_names = updated[1]
+        sorted_scores = updated[0]
+        for i in range (0,n):
+            print (sorted_names[i],'{0:>14}'.format(sorted_scores[i]))
+
+    elif command == '4':
+        name = input('Enter the name of the player:')
+        find = linear_search(sorted_name, sorted_score, name)
+        find_name = find[0]
+        find_score = find[1]
+        print (find_name,'{0:>14}'.format(find_score))
+
+
+names = []
+scores = []
+
+
+
+
